@@ -1,70 +1,84 @@
-// -----------------------------------------------------------------------
-// <copyright file="CommandLogging.cs" company="Exiled Team">
-// Copyright (c) Exiled Team. All rights reserved.
-// Licensed under the CC BY-SA 3.0 license.
-// </copyright>
-// -----------------------------------------------------------------------
+using DiscordIntegration.Dependency;
+using Exiled.API.Features;
+using HarmonyLib;
+using RemoteAdmin;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 
 namespace DiscordIntegration.Patches
 {
-#pragma warning disable SA1118
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection.Emit;
-    using System.Threading.Tasks;
-    using Dependency;
-    using Exiled.API.Features;
-    using global::DiscordIntegration.API;
-    using global::DiscordIntegration.API.Commands;
-    using HarmonyLib;
-    using NorthwoodLib.Pools;
-    using RemoteAdmin;
-
-    using static HarmonyLib.AccessTools;
-
-    /// <summary>
-    /// Patches <see cref="RemoteAdmin.CommandProcessor.ProcessQuery"/> for command logging.
-    /// </summary>
-    [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery))]
-    internal class CommandLogging
+    [HarmonyPatch]
+    internal static class CommandLogging
     {
+        private static readonly char[] SpaceArray = { ' ' };
+
+        [HarmonyPatch(typeof(CommandProcessor))]
+        [HarmonyPatch("ProcessQuery")]
+        public static MethodBase TargetMethod()
+        {
+            return AccessTools.Method(typeof(CommandProcessor), "ProcessQuery");
+        }
+
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            const int index = 0;
+            var newInstructions = new List<CodeInstruction>(instructions);
 
-            newInstructions.InsertRange(index, new[]
+            var logCommandMethod = typeof(CommandLogging).GetMethod(nameof(LogCommand), BindingFlags.NonPublic | BindingFlags.Static);
+
+            newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(CommandLogging), nameof(LogCommand))),
+                new CodeInstruction(OpCodes.Call, logCommandMethod),
             });
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            foreach (var instruction in newInstructions)
+                yield return instruction;
         }
 
         private static void LogCommand(string query, CommandSender sender)
         {
-            if (!DiscordIntegration.Instance.Config.EventsToLog.SendingRemoteAdminCommands && !DiscordIntegration.Instance.Config.StaffOnlyEventsToLog.SendingRemoteAdminCommands)
+            if (!DiscordIntegration.Instance.Config.EventsToLog.SendingRemoteAdminCommands &&
+                !DiscordIntegration.Instance.Config.StaffOnlyEventsToLog.SendingRemoteAdminCommands)
                 return;
 
-            string[] args = query.Trim().Split(QueryProcessor.SpaceArray, 512, StringSplitOptions.RemoveEmptyEntries);
-            if (args[0].StartsWith("$"))
+            if (string.IsNullOrWhiteSpace(query))
                 return;
 
-            Player player = sender is RemoteAdmin.PlayerCommandSender playerCommandSender
+            string[] args = query.Trim().Split(SpaceArray, 512, StringSplitOptions.RemoveEmptyEntries);
+
+            if (args.Length == 0 || args[0].StartsWith("$", StringComparison.Ordinal))
+                return;
+
+            Player player = sender is PlayerCommandSender playerCommandSender
                 ? Player.Get(playerCommandSender)
                 : Server.Host;
-            if (player == null || (!string.IsNullOrEmpty(player.UserId) && DiscordIntegration.Instance.Config.TrustedAdmins.Contains(player.UserId)))
+
+            if (player == null)
                 return;
+
+            if (!string.IsNullOrEmpty(player.UserId) && DiscordIntegration.Instance.Config.TrustedAdmins.Contains(player.UserId))
+                return;
+
+            string commandName = args[0];
+            string commandArgs = string.Join(" ", args.Skip(1));
+
+            string message = string.Format(
+                DiscordIntegration.Language.UsedCommand,
+                sender.Nickname,
+                sender.SenderId ?? DiscordIntegration.Language.DedicatedServer,
+                player.Role,
+                commandName,
+                commandArgs);
+
             if (DiscordIntegration.Instance.Config.EventsToLog.SendingRemoteAdminCommands)
-                _ = DiscordIntegration.Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.Command, string.Format(DiscordIntegration.Language.UsedCommand, sender.Nickname, sender.SenderId ?? DiscordIntegration.Language.DedicatedServer, player.Role, args[0], string.Join(" ", args.Where(a => a != args[0])))));
+                _ = DiscordIntegration.Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.Command, message));
+
             if (DiscordIntegration.Instance.Config.StaffOnlyEventsToLog.SendingRemoteAdminCommands)
-                _ = DiscordIntegration.Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.StaffCopy, string.Format(DiscordIntegration.Language.UsedCommand, sender.Nickname, sender.SenderId ?? DiscordIntegration.Language.DedicatedServer, player.Role, args[0], string.Join(" ", args.Where(a => a != args[0])))));
+                _ = DiscordIntegration.Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.StaffCopy, message));
         }
     }
 }

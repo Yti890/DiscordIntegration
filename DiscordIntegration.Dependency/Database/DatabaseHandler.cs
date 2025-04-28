@@ -1,82 +1,56 @@
 using System;
 using System.IO;
-using Microsoft.Data.Sqlite;
+using LiteDB;
 
-namespace DiscordIntegration.Dependency.Database;
-
-public class DatabaseHandler
+namespace DiscordIntegration.Dependency.Database
 {
-    private static string _connectionString =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DiscordIntegration.db");
-
-    public static void Init()
+    public class DatabaseHandler
     {
-        using SqliteConnection conn = new(_connectionString);
-        conn.Open();
+        private static readonly string DatabasePath =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DiscordIntegration.db");
 
-        using (SqliteCommand cmd = conn.CreateCommand())
+        private static LiteDatabase Database => new($"Filename={DatabasePath};Connection=shared");
+
+        private static ILiteCollection<WatchlistEntry> WatchlistCollection => Database.GetCollection<WatchlistEntry>("watchlist");
+
+        public static void Init()
         {
-            cmd.CommandText =
-                "CREATE TABLE IF NOT EXISTS Watchlist(Id INTEGER PRIMARY KEY AUTOINCREMENT, UserId TEXT, Reason TEXT)";
-            cmd.ExecuteNonQuery();
+            WatchlistCollection.EnsureIndex(x => x.UserId);
         }
-        
-        conn.Close();
-    }
 
-    public static void AddEntry(string userId, string reason)
-    {
-        using SqliteConnection conn = new(_connectionString);
-        conn.Open();
-
-        using (SqliteCommand cmd = conn.CreateCommand())
+        public static void AddEntry(string userId, string reason)
         {
-            cmd.CommandText = "INSERT INTO Watchlist(UserId, Reason) VALUES(@id, @reason)";
-            cmd.Parameters.AddWithValue("@id", userId);
-            cmd.Parameters.AddWithValue("@reason", reason);
-            cmd.ExecuteNonQuery();
-        }
-        conn.Close();
-    }
-
-
-    public static void RemoveEntry(string userId)
-    {
-        using SqliteConnection conn = new(_connectionString);
-        conn.Open();
-
-        using (SqliteCommand cmd = conn.CreateCommand())
-        {
-            cmd.CommandText = "DELETE FROM Watchlist WHERE UserId=@id";
-            cmd.Parameters.AddWithValue("@id", userId);
-
-            cmd.ExecuteNonQuery();
-        }
-        
-        conn.Close();
-    }
-
-    public static bool CheckWatchlist(string userId, out string reason)
-    {
-        reason = "Not in watchlist";
-        using SqliteConnection conn = new(_connectionString);
-        conn.Open();
-        
-        using (SqliteCommand cmd = conn.CreateCommand())
-        {
-            cmd.CommandText = "SELECT * FROM Watchlist WHERE UserId=@id";
-            cmd.Parameters.AddWithValue("@id", userId);
-
-            using (SqliteDataReader reader = cmd.ExecuteReader())
+            var entry = new WatchlistEntry
             {
-                while (reader.Read())
-                {
-                    reason = reader.GetString(2);
-                    return true;
-                }
-            }
+                UserId = userId,
+                Reason = reason
+            };
+            WatchlistCollection.Upsert(entry);
         }
-        conn.Close();
-        return false;
+
+        public static void RemoveEntry(string userId)
+        {
+            WatchlistCollection.DeleteMany(x => x.UserId == userId);
+        }
+
+        public static bool CheckWatchlist(string userId, out string reason)
+        {
+            var entry = WatchlistCollection.FindOne(x => x.UserId == userId);
+            if (entry != null)
+            {
+                reason = entry.Reason;
+                return true;
+            }
+
+            reason = "Not in watchlist";
+            return false;
+        }
+
+        private class WatchlistEntry
+        {
+            public int Id { get; set; }
+            public string UserId { get; set; }
+            public string Reason { get; set; }
+        }
     }
 }

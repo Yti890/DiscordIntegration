@@ -11,7 +11,7 @@ namespace DiscordIntegration.Events
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Text;
-    using API.Commands;
+
     using Dependency;
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -31,20 +31,20 @@ namespace DiscordIntegration.Events
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, Language.WarheadHasDetonated)).ConfigureAwait(false);
         }
 
-        public async void OnGeneratorActivated(GeneratorActivatedEventArgs ev)
+        public async void OnGeneratorActivated(Exiled.Events.EventArgs.Map.GeneratorActivatingEventArgs ev)
         {
             if (Instance.Config.EventsToLog.GeneratorActivated)
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, string.Format(Language.GeneratorFinished, ev.Generator.Room, Generator.Get(GeneratorState.Engaged).Count() + 1))).ConfigureAwait(false);
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1313:Parameter names should begin with lower-case letter", Justification = "Discard operator")]
-        public async void OnDecontaminating(DecontaminatingEventArgs _)
+        public async void OnDecontaminating(Exiled.Events.EventArgs.Map.DecontaminatingEventArgs _)
         {
             if (Instance.Config.EventsToLog.Decontaminating)
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, Language.DecontaminationHasBegun)).ConfigureAwait(false);
         }
 
-        public async void OnStartingWarhead(StartingEventArgs ev)
+        public async void OnStartingWarhead(Exiled.Events.EventArgs.Warhead.StartingEventArgs ev)
         {
             if (Instance.Config.EventsToLog.StartingWarhead && (ev.Player == null || (ev.Player != null && (!ev.Player.DoNotTrack || !Instance.Config.ShouldRespectDoNotTrack))))
             {
@@ -56,7 +56,7 @@ namespace DiscordIntegration.Events
             }
         }
 
-        public async void OnStoppingWarhead(StoppingEventArgs ev)
+        public async void OnStoppingWarhead(Exiled.Events.EventArgs.Warhead.StoppingEventArgs ev)
         {
             if (Instance.Config.EventsToLog.StoppingWarhead && (ev.Player == null || (ev.Player != null && (!ev.Player.DoNotTrack || !Instance.Config.ShouldRespectDoNotTrack))))
             {
@@ -77,7 +77,7 @@ namespace DiscordIntegration.Events
             }
         }
 
-        public async void OnUpgradingItems(UpgradingItemEventArgs ev)
+        public async void OnUpgradingItems(Exiled.Events.EventArgs.Scp914.UpgradingInventoryItemEventArgs ev)
         {
             if (Instance.Config.EventsToLog.UpgradingScp914Items)
             {

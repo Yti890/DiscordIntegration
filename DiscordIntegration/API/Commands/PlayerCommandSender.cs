@@ -57,5 +57,10 @@ namespace DiscordIntegration.API.Commands
 
         /// <inheritdoc/>
         public override void RaReply(string text, bool success, bool logToConsole, string overrideDisplay) => player.Sender.RaReply($"DISCORDINTEGRATION#{text}", success, logToConsole, overrideDisplay);
+
+        public override bool Available()
+        {
+            return true;
+        }
     }
 }

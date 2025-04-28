@@ -30,7 +30,6 @@ namespace DiscordIntegration.API.Commands
             User = user;
             Sender = new BotCommandSender(channelId, user?.Id, user?.Name, user?.Command);
         }
-
         /// <summary>
         /// Gets the Discord channel ID.
         /// </summary>
@@ -55,6 +54,6 @@ namespace DiscordIntegration.API.Commands
         /// <summary>
         /// Executes the command.
         /// </summary>
-        public void Execute() => CommandProcessor.ProcessQuery(Content, Sender);
+        public void Execute() => CommandProcessorWrapper.ProcessQuery(Content, Sender);
     }
 }

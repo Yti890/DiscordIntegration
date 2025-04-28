@@ -10,11 +10,11 @@ namespace DiscordIntegration.Events
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using System;
     using System.Net;
-    using API.Commands;
     using API.EventArgs.Network;
     using API.User;
     using Dependency;
     using Exiled.API.Features;
+    using global::DiscordIntegration.API.Commands;
     using Newtonsoft.Json;
     using static DiscordIntegration;
 
@@ -28,13 +28,13 @@ namespace DiscordIntegration.Events
         {
             try
             {
-                Log.Debug($"[NET] {string.Format(Language.ReceivedData, ev.Data, ev.Length)}", Instance.Config.IsDebugEnabled);
+                Log.Debug($"[NET] {string.Format(Language.ReceivedData, ev.Data, ev.Length)}");
                 if (ev.Data.Contains("heartbeat"))
                     return;
 
                 RemoteCommand remoteCommand = JsonConvert.DeserializeObject<RemoteCommand>(ev.Data, Network.JsonSerializerSettings);
 
-                Log.Debug($"[NET] {string.Format(Language.HandlingRemoteCommand, remoteCommand.Action, remoteCommand.Parameters[0], Network.TcpClient?.Client?.RemoteEndPoint)}", Instance.Config.IsDebugEnabled);
+                Log.Debug($"[NET] {string.Format(Language.HandlingRemoteCommand, remoteCommand.Action, remoteCommand.Parameters[0], Network.TcpClient?.Client?.RemoteEndPoint)}");
 
                 switch (remoteCommand.Action)
                 {
@@ -66,7 +66,7 @@ namespace DiscordIntegration.Events
         }
 
         /// <inheritdoc cref="API.Network.OnSent(object, SentEventArgs)"/>
-        public void OnSent(object _, SentEventArgs ev) => Log.Debug(string.Format(Language.SentData, ev.Data, ev.Length), Instance.Config.IsDebugEnabled);
+        public void OnSent(object _, SentEventArgs ev) => Log.Debug(string.Format(Language.SentData, ev.Data, ev.Length));
 
         /// <inheritdoc cref="API.Network.OnConnecting(object, ConnectingEventArgs)"/>
         public void OnConnecting(object _, ConnectingEventArgs ev)

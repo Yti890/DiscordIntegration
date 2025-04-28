@@ -12,7 +12,6 @@ namespace DiscordIntegration.API.Configs
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using API.Commands;
     using Dependency;
     using Exiled.API.Features;
     using Mirror;
@@ -74,7 +73,7 @@ namespace DiscordIntegration.API.Configs
             {
                 try
                 {
-                    Log.Debug($"{nameof(UpdateActivity)}: Updating bot activity: {Player.Dictionary.Count}/{Instance.Slots}", Instance.Config.IsDebugEnabled);
+                    Log.Debug($"{nameof(UpdateActivity)}: Updating bot activity: {Player.Dictionary.Count}/{Instance.Slots}");
                     await Network.SendAsync(new RemoteCommand(ActionType.UpdateActivity, $"{Player.Dictionary.Count}/{Instance.Slots}"), cancellationToken);
                     await Task.Delay(TimeSpan.FromSeconds(Instance.Config.Bot.StatusUpdateInterval), cancellationToken);
                 }
@@ -107,7 +106,7 @@ namespace DiscordIntegration.API.Configs
                 try
                 {
                     int aliveHumans = Player.List.Count(player => player.IsAlive && player.IsHuman);
-                    int aliveScps = Player.Get(Team.SCP).Count();
+                    int aliveScps = Player.Get(PlayerRoles.Team.SCPs).Count();
 
                     string warheadText = Warhead.IsDetonated ? Language.WarheadHasBeenDetonated : Warhead.IsInProgress ? Language.WarheadIsCountingToDetonation : Language.WarheadHasntBeenDetonated;
 

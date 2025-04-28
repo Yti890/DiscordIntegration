@@ -123,5 +123,6 @@ namespace DiscordIntegration
         /// </summary>
         [Description("Indicates whether the player watchlist feature can be used.")]
         public bool UseWatchlist { get; set; } = true;
+        public bool Debug { get; set; } = false;
     }
 }

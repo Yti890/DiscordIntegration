@@ -7,9 +7,11 @@
 
 namespace DiscordIntegration.API.Commands
 {
+    using CommandSystem.Commands.RemoteAdmin.PermissionsManagement.Group;
     using Dependency;
     using Newtonsoft.Json;
     using static DiscordIntegration;
+    using static Exiled.Loader.Features.MultiAdminFeatures;
 
     /// <summary>
     /// Represents the bot command sender.
@@ -49,7 +51,7 @@ namespace DiscordIntegration.API.Commands
         public override string Nickname { get; }
 
         /// <inheritdoc cref="CommandSender.Permissions"/>
-        public override ulong Permissions { get; } = ServerStatic.GetPermissionsHandler().FullPerm;
+        public override ulong Permissions { get; } = ServerStatic.PermissionsHandler.FullPerm;
 
         /// <inheritdoc cref="CommandSender.KickPower"/>
         public override byte KickPower { get; } = byte.MaxValue;
@@ -60,10 +62,15 @@ namespace DiscordIntegration.API.Commands
         /// <inheritdoc cref="CommandSender.RaReply"/>
         public override async void RaReply(string text, bool success, bool logToConsole, string overrideDisplay)
         {
-            await Network.SendAsync(new RemoteCommand(ActionType.SendMessage, ChannelId, $"{Command}|{text.Substring(text.IndexOf('#') + 1)}", success));
+            await Network.SendAsync(new RemoteCommand(Dependency.ActionType.SendMessage, ChannelId, $"{Command}|{text.Substring(text.IndexOf('#') + 1)}", success));
         }
 
         /// <inheritdoc cref="CommandSender.Print"/>
-        public override async void Print(string text) => await Network.SendAsync(new RemoteCommand(ActionType.SendMessage, ChannelId, text.Substring(text.IndexOf('#') + 1), true));
+        public override async void Print(string text) => await Network.SendAsync(new RemoteCommand(Dependency.ActionType.SendMessage, ChannelId, text.Substring(text.IndexOf('#') + 1), true));
+
+        public override bool Available()
+        {
+            return true;
+        }
     }
 }
