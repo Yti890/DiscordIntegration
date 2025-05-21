@@ -1,9 +1,12 @@
 # DiscordIntegration
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/Yti890/DiscordIntegration/total?style=for-the-badge)
+![GitHub Release](https://img.shields.io/github/v/release/Yti890/DiscordIntegration?style=for-the-badge)
+
 
 A bot and server plugin to allow server logs to be sent to Discord channels, and for server commands to be run via the Discord bot.
 
 ## Minimum requirements
-[EXILED](https://github.com/ExMod-Team/EXILED/releases) **9.6.0-beta7++**
+[EXILED](https://github.com/ExSLMod-Team/EXILED/releases) **9.6.0++**
 
 ## Installation
 1. Extract `DiscordIntegration.dll` and its dependencies from `Plugin.tar.gz`.
