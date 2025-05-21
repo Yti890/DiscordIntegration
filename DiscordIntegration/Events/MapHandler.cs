@@ -9,6 +9,7 @@ namespace DiscordIntegration.Events
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Diagnostics.Eventing.Reader;
     using System.Linq;
     using System.Text;
 
@@ -72,8 +73,6 @@ namespace DiscordIntegration.Events
                 object[] vars = ev.Player == null
                     ? Array.Empty<object>()
                     : new object[] { ev.Player.Nickname, ev.Player.UserId, ev.Player.Role };
-
-                await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.StaffCopy, string.Format(ev.Player == null ? Language.CanceledWarhead : Language.PlayerCanceledWarhead, vars))).ConfigureAwait(false);
             }
         }
 
@@ -82,6 +81,30 @@ namespace DiscordIntegration.Events
             if (Instance.Config.EventsToLog.UpgradingScp914Items)
             {
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, string.Format(Language.Scp914ProcessedItem, ev.Item.Type)));
+            }
+        }
+
+        public async void OnAnnounceMTF(Exiled.Events.EventArgs.Map.AnnouncingNtfEntranceEventArgs ev)
+        {
+            if (Instance.Config.EventsToLog.AnnounceNTF)
+            {
+                await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, Language.AnnounceNTF));
+            }
+        }
+
+        public async void OnAnnounceCI(Exiled.Events.EventArgs.Map.AnnouncingChaosEntranceEventArgs ev)
+        {
+            if (Instance.Config.EventsToLog.AnnounceCI)
+            {
+                await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, Language.AnnounceCI));
+            }
+        }
+
+        public async void OnTurningOffLights(Exiled.Events.EventArgs.Map.TurningOffLightsEventArgs ev)
+        {
+            if (Instance.Config.EventsToLog.TurningOffLight)
+            {
+                await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, string.Format(Language.TurnOffLights, ev.Duration)));
             }
         }
     }

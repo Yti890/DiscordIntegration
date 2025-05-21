@@ -76,9 +76,6 @@ namespace DiscordIntegration.Patches
 
             if (DiscordIntegration.Instance.Config.EventsToLog.SendingRemoteAdminCommands)
                 _ = DiscordIntegration.Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.Command, message));
-
-            if (DiscordIntegration.Instance.Config.StaffOnlyEventsToLog.SendingRemoteAdminCommands)
-                _ = DiscordIntegration.Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.StaffCopy, message));
         }
     }
 }

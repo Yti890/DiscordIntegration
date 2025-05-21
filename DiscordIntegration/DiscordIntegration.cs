@@ -76,11 +76,6 @@ namespace DiscordIntegration
         }
 
         /// <summary>
-        /// Gets the minimum version of Exiled to make the plugin work correctly.
-        /// </summary>
-        public override Version RequiredExiledVersion { get; } = new Version(5, 2, 0);
-
-        /// <summary>
         /// Fired when the plugin is enabled.
         /// </summary>
         public override void OnEnabled()
@@ -105,13 +100,13 @@ namespace DiscordIntegration
 
             RegisterEvents();
 
-            Bot.UpdateActivityCancellationTokenSource = new CancellationTokenSource();
-            Bot.UpdateChannelsTopicCancellationTokenSource = new CancellationTokenSource();
+            API.Configs.Bot.UpdateActivityCancellationTokenSource = new CancellationTokenSource();
+            API.Configs.Bot.UpdateChannelsTopicCancellationTokenSource = new CancellationTokenSource();
 
             _ = Network.Start(NetworkCancellationTokenSource);
 
-            _ = Bot.UpdateActivity(Bot.UpdateActivityCancellationTokenSource.Token);
-            _ = Bot.UpdateChannelsTopic(Bot.UpdateChannelsTopicCancellationTokenSource.Token);
+            _ = API.Configs.Bot.UpdateActivity(API.Configs.Bot.UpdateActivityCancellationTokenSource.Token);
+            _ = API.Configs.Bot.UpdateChannelsTopic(API.Configs.Bot.UpdateChannelsTopicCancellationTokenSource.Token);
 
             base.OnEnabled();
         }
@@ -129,11 +124,11 @@ namespace DiscordIntegration
 
             Network.Close();
 
-            Bot.UpdateActivityCancellationTokenSource.Cancel();
-            Bot.UpdateActivityCancellationTokenSource.Dispose();
+            API.Configs.Bot.UpdateActivityCancellationTokenSource.Cancel();
+            API.Configs.Bot.UpdateActivityCancellationTokenSource.Dispose();
 
-            Bot.UpdateChannelsTopicCancellationTokenSource.Cancel();
-            Bot.UpdateChannelsTopicCancellationTokenSource.Dispose();
+            API.Configs.Bot.UpdateChannelsTopicCancellationTokenSource.Cancel();
+            API.Configs.Bot.UpdateChannelsTopicCancellationTokenSource.Dispose();
 
             UnregisterEvents();
 
@@ -200,6 +195,10 @@ namespace DiscordIntegration
             Handlers.Player.ChangingGroup += playerHandler.OnChangingGroup;
             Handlers.Player.ChangingItem += playerHandler.OnChangingItem;
             Handlers.Scp914.Activating += playerHandler.OnActivatingScp914;
+            Handlers.Map.AnnouncingChaosEntrance += mapHandler.OnAnnounceCI;
+            Handlers.Map.AnnouncingNtfEntrance += mapHandler.OnAnnounceMTF;
+            Handlers.Map.TurningOffLights += mapHandler.OnTurningOffLights;
+            Handlers.Player.MicroHIDOpeningDoor += playerHandler.OnOpenMicroHID;
 
             Network.SendingError += networkHandler.OnSendingError;
             Network.ReceivingError += networkHandler.OnReceivingError;
@@ -264,6 +263,10 @@ namespace DiscordIntegration
             Handlers.Player.ChangingGroup -= playerHandler.OnChangingGroup;
             Handlers.Player.ChangingItem -= playerHandler.OnChangingItem;
             Handlers.Scp914.Activating -= playerHandler.OnActivatingScp914;
+            Handlers.Map.AnnouncingChaosEntrance -= mapHandler.OnAnnounceCI;
+            Handlers.Map.AnnouncingNtfEntrance -= mapHandler.OnAnnounceMTF;
+            Handlers.Map.TurningOffLights -= mapHandler.OnTurningOffLights;
+            Handlers.Player.MicroHIDOpeningDoor -= playerHandler.OnOpenMicroHID;
 
             Network.SendingError -= networkHandler.OnSendingError;
             Network.ReceivingError -= networkHandler.OnReceivingError;

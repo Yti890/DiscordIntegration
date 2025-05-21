@@ -108,5 +108,13 @@ namespace DiscordIntegration.API.Configs
         public bool Scp079InteractingTesla { get; private set; } = true;
 
         public bool GainingScp079Level { get; private set; } = true;
+
+        public bool AnnounceNTF { get; private set; } = true;
+
+        public bool AnnounceCI { get; private set; } = true;
+
+        public bool TurningOffLight { get; private set; } = true;
+
+        public bool OpenMicroHIDDoor { get; private set; } = true;
     }
 }

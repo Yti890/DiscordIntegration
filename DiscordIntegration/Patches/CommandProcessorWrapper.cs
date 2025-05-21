@@ -11,7 +11,7 @@ public static class CommandProcessorWrapper
     public static string ProcessQuery(string query, CommandSender sender)
     {
         if (ProcessQueryMethod == null)
-            throw new InvalidOperationException("Не найден метод CommandProcessor.ProcessQuery");
+            throw new InvalidOperationException("Not find CommandProcessor.ProcessQuery");
 
         return (string)ProcessQueryMethod.Invoke(null, new object[] { query, sender });
     }

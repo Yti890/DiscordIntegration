@@ -84,9 +84,6 @@ namespace DiscordIntegration.Patches
 
             if (DiscordIntegration.Instance.Config.EventsToLog.SendingConsoleCommands)
                 _ = DiscordIntegration.Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.Command, message));
-
-            if (DiscordIntegration.Instance.Config.StaffOnlyEventsToLog.SendingConsoleCommands)
-                _ = DiscordIntegration.Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.StaffCopy, message));
         }
     }
 }

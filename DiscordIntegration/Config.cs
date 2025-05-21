@@ -28,7 +28,7 @@ namespace DiscordIntegration
         /// Gets bot-related configs.
         /// </summary>
         [Description("Bot-related configs")]
-        public Bot Bot { get; private set; } = new Bot();
+        public API.Configs.Bot Bot { get; private set; } = new API.Configs.Bot();
 
         /// <summary>
         /// Gets events to log confings.

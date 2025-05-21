@@ -1,11 +1,10 @@
-namespace DiscordIntegration.Bot.Services;
-
 using Discord;
-
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using System.Reflection;
 using System.Runtime.InteropServices;
+
+namespace DiscordIntegration.Bot.Services;
 
 public class Log
 {

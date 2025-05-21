@@ -259,13 +259,14 @@ namespace DiscordIntegration
         public string NotAuthenticated { get; set; } = "Not authenticated";
 
         public string DedicatedServer { get; set; } = "Dedicated server";
-        
-        public string WatchlistedUserJoined { get; set; } = "Watchlisted user {0} ({1}) [{2}] has joined the server.\nWatchlist Reason: {3}";
 
-        public string WatchlistAddDescription { get; set; } = "Adds a user to the watchlist.";
-        
-        public string WatchlistRemoveDescription { get; set; } = "Removes a user from the watchlist.";
+        public string AnnounceNTF { get; set; } = "Nine Tailed Fox has arrived on Site.";
 
+        public string AnnounceCI { get; set; } = "Chaos Insurgency has arrived on Site.";
+
+        public string TurnOffLights { get; set; } = "The light was turned off for a while: [1].";
+
+        public string OpenMicroHID { get; set; } = "Player [1], (2), opened MicroHID";
 #pragma warning restore CS1591
 #pragma warning restore SA1600 // Elements should be documented
 

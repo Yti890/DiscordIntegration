@@ -38,8 +38,6 @@ namespace DiscordIntegration.Events
         {
             if (Instance.Config.EventsToLog.WaitingForPlayers)
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, Language.WaitingForPlayers)).ConfigureAwait(false);
-            if (Instance.Config.StaffOnlyEventsToLog.WaitingForPlayers)
-                await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.StaffCopy, Language.WaitingForPlayers)).ConfigureAwait(false);
         }
 
         public async void OnRoundStarted()
@@ -58,23 +56,6 @@ namespace DiscordIntegration.Events
         {
             if (Instance.Config.EventsToLog.RespawningTeam)
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, string.Format(ev.NextKnownTeam == PlayerRoles.Faction.FoundationEnemy ? Language.ChaosInsurgencyHaveSpawned : Language.NineTailedFoxHaveSpawned, ev.Players.Count))).ConfigureAwait(false);
-        }
-
-        public async void Command(Exiled.Events.EventArgs.Player.SendingValidCommandEventArgs ev)
-        {
-            string message = string.Format(
-                DiscordIntegration.Language.UsedCommand,
-                ev.Player.Nickname,
-                ev.Player.UserId ?? DiscordIntegration.Language.DedicatedServer,
-                ev.Player.Role,
-                ev.Command.Command,
-                ev.Command.Aliases);
-
-            if (DiscordIntegration.Instance.Config.EventsToLog.SendingRemoteAdminCommands)
-                _ = DiscordIntegration.Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.Command, message));
-
-            if (DiscordIntegration.Instance.Config.StaffOnlyEventsToLog.SendingRemoteAdminCommands)
-                _ = DiscordIntegration.Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.StaffCopy, message));
         }
     }
 }
