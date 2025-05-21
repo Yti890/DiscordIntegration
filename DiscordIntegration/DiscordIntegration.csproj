@@ -24,14 +24,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Lib.Harmony" Version="2.2.2" />
+    <PackageReference Include="Lib.Harmony" Version="2.3.6" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
-    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>..\..\..\..\Downloads\Exiled\EXILED\Plugins\dependencies\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>D:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
@@ -42,7 +45,7 @@
       <HintPath>D:\SteamLibrary\steamapps\common\SCP Secret Laboratory Dedicated Server\SCPSL_Data\Managed\CommandSystem.Core.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.API">
-      <HintPath>..\..\..\..\Downloads\Exiled\SCP Secret Laboratory\LabAPI-Beta\dependencies\global\Exiled.API.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\Exiled\SCP Secret Laboratory\LabAPI\dependencies\global\Exiled.API.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.CreditTags">
       <HintPath>..\..\..\..\Downloads\Exiled\EXILED\Plugins\Exiled.CreditTags.dll</HintPath>
@@ -57,7 +60,7 @@
       <HintPath>..\..\..\..\Downloads\Exiled\EXILED\Plugins\Exiled.Events.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Loader">
-      <HintPath>..\..\..\..\Downloads\Exiled\SCP Secret Laboratory\LabAPI-Beta\plugins\global\Exiled.Loader.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\Exiled\SCP Secret Laboratory\LabAPI\plugins\global\Exiled.Loader.dll</HintPath>
     </Reference>
     <Reference Include="Exiled.Permissions">
       <HintPath>..\..\..\..\Downloads\Exiled\EXILED\Plugins\Exiled.Permissions.dll</HintPath>

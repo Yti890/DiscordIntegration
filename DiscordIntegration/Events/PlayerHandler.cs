@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using DiscordIntegration.Dependency.Database;
-
 namespace DiscordIntegration.Events
 {
     using System;
@@ -244,13 +242,6 @@ namespace DiscordIntegration.Events
 
         public async void OnVerified(Exiled.Events.EventArgs.Player.VerifiedEventArgs ev)
         {
-            if (Instance.Config.UseWatchlist)
-            {
-                if (DatabaseHandler.CheckWatchlist(ev.Player.UserId, out string reason))
-                    if (!string.IsNullOrEmpty(reason))
-                        await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.Watchlist, string.Format(Language.WatchlistedUserJoined, ev.Player.Nickname, ev.Player.UserId, ev.Player.IPAddress, reason)));
-            }
-
             if (Instance.Config.EventsToLog.PlayerJoined && (!ev.Player.DoNotTrack || !Instance.Config.ShouldRespectDoNotTrack))
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, string.Format(Language.HasJoinedTheGame, ev.Player.Nickname, Instance.Config.ShouldLogUserIds ? ev.Player.UserId : Language.Redacted, Instance.Config.ShouldLogIPAddresses ? ev.Player.IPAddress : Language.Redacted))).ConfigureAwait(false);
             if (Instance.Config.StaffOnlyEventsToLog.PlayerJoined)

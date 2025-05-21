@@ -71,14 +71,6 @@ public class Config
                                 LogType = LogType.Embed
                             },
                         },
-                        StaffCopy = new List<LogChannel>
-                        {
-                            new()
-                            {
-                                Id = 0,
-                                LogType = LogType.Embed
-                            },
-                        },
                         Errors = new List<LogChannel>
                         {
                             new()
