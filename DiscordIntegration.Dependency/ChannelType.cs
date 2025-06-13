@@ -6,6 +6,7 @@ namespace DiscordIntegration.Dependency
         GameEvents,
         Bans,
         Reports,
-        Errors
+        Errors,
+        AdminChat
     }
 }

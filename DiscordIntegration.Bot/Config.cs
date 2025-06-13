@@ -12,6 +12,7 @@ public class Config
     public int KeepAliveInterval { get; set; }
     public int MessageDelay { get; set; }
     public bool Debug { get; set; }
+    public ushort AdminChatMesg { get; set; }
 
     public static Config Default => new()
     {
@@ -22,7 +23,7 @@ public class Config
                 "bot-token-here"
             }
         },
-        
+
         Channels = new Dictionary<ushort, ChannelConfig>
         {
             {
@@ -79,11 +80,19 @@ public class Config
                                 LogType = LogType.Embed
                             },
                         },
+                        AdminChat = new List<LogChannel>
+                        {
+                            new()
+                            {
+                                Id = 0,
+                                LogType = LogType.Embed
+                            },
+                        },
                     }
                 }
             }
         },
-        
+
         ValidCommands = new Dictionary<ushort, Dictionary<ulong, List<string>>>
         {
             {
@@ -98,14 +107,14 @@ public class Config
                 }
             }
         },
-        
+
         DiscordServerIds = new Dictionary<ushort, ulong>
         {
             {
                 1, 0
             }
         },
-        
+
         TcpServers = new Dictionary<ushort, TcpServerConfig>
         {
             {
@@ -116,7 +125,7 @@ public class Config
                 }
             }
         },
-        
+
         KeepAliveInterval = 2000,
         MessageDelay = 1000,
         Debug = false,

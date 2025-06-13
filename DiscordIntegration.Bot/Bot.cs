@@ -25,7 +25,8 @@ public class Bot
     public InteractionService InteractionService { get; private set; } = null!;
     public SlashCommandHandler CommandHandler { get; private set; } = null!;
     public Dictionary<LogChannel, string> Messages { get; } = new();
-    public DiscordSocketClient Client => client ??= new DiscordSocketClient();
+    private DiscordSocketConfig config = new DiscordSocketConfig { GatewayIntents = GatewayIntents.Guilds | GatewayIntents.GuildMessages | GatewayIntents.MessageContent };
+    public DiscordSocketClient Client => client ??= new DiscordSocketClient(config);
     public SocketGuild Guild => guild ??= Client.GetGuild(Program.Config.DiscordServerIds[ServerNumber]);
 
     public Bot(ushort port, string token)
@@ -72,6 +73,7 @@ public class Bot
         CommandHandler = new(InteractionService, Client, this);
         InteractionService.Log += SendLog;
         Client.Log += SendLog;
+        Client.MessageReceived += MessageReceived;
     }
 
     private async Task RegisterCommands()
@@ -114,6 +116,19 @@ public class Bot
         {
             Log.Error(ServerNumber, nameof(OnReceived), e);
         }
+    }
+    private Task MessageReceived(SocketMessage message)
+    {
+        if (message is not SocketUserMessage userMessage || userMessage.Author.IsBot)
+            return Task.CompletedTask;
+
+        if (Program.Config.Channels.TryGetValue(ServerNumber, out var channelConfig) && channelConfig.Logs.AdminChat.Any(channel => channel.Id == userMessage.Channel.Id))
+        {
+            var formatted = $"[<color=blue>DISCORD</color>] {userMessage.Content} ~ {userMessage.Author.GlobalName}";
+            Server.SendAsync(new RemoteCommand(ActionType.AdminMessage, formatted));
+        }
+
+        return Task.CompletedTask;
     }
 
     private void HandleLogCommand(RemoteCommand command)

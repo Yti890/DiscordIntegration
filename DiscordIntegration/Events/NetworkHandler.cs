@@ -16,6 +16,7 @@ namespace DiscordIntegration.Events
     using Exiled.API.Features;
     using global::DiscordIntegration.API.Commands;
     using Newtonsoft.Json;
+    using UnityEngine;
     using static DiscordIntegration;
 
     /// <summary>
@@ -44,6 +45,16 @@ namespace DiscordIntegration.Events
                         break;
                     case ActionType.CommandReply:
                         JsonConvert.DeserializeObject<CommandReply>(remoteCommand.Parameters[0].ToString(), Network.JsonSerializerSettings)?.Answer();
+                        break;
+                    case ActionType.AdminMessage:
+                        foreach (var plr in Player.List)
+                        {
+                            if (plr.AdminChatAccess == true)
+                            {
+                                plr.SendConsoleMessage(remoteCommand.Parameters[0].ToString(), Color.green.ToString());
+                                plr.Broadcast(10, remoteCommand.Parameters[0].ToString(), global::Broadcast.BroadcastFlags.Normal, false);
+                            }
+                        }
                         break;
                 }
             }
