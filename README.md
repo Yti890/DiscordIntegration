@@ -10,6 +10,9 @@
   <a href="https://github.com/Yti890/DiscordIntegration/releases">
     <img src="https://img.shields.io/github/v/release/Yti890/DiscordIntegration?style=flat-square&logo=github" alt="Release"/>
   </a>
+  <a href="https://github.com/Yti890/DiscordIntegration/releases">
+    <img src="https://img.shields.io/github/downloads/Yti890/DiscordIntegration/total?style=flat-square" alt="Downloads"/>
+  </a>
   <a href="https://github.com/Yti890/DiscordIntegration/issues">
     <img src="https://img.shields.io/github/issues/Yti890/DiscordIntegration?style=flat-square&logo=github" alt="Issues"/>
   </a>
