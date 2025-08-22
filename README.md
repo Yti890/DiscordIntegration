@@ -32,3 +32,5 @@
 - [Old README](./README/README.old.md)
 - [EXILED README](./README/README.EXILED.md)
 - [LabAPI README](./README/README.LabAPI.md)  
+- [Create Discord Bot README](./README/README.CDB.md)
+- [Config.json file README](./README/README.CJF.md)  
