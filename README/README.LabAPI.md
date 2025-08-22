@@ -1,6 +1,6 @@
 <h1 align="center">LabAPI Version</h1>
 
-- [README](./README.md)
+- [README](https://github.com/Yti890/DiscordIntegration/blob/master/README.md)
 - [Old README](./README.old.md)
 - [EXILED README](./README.EXILED.md)  
 
