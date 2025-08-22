@@ -14,4 +14,4 @@
 
 - Extract `DiscordIntegration.dll` and its dependencies from `Linux-Plugin-LabAPI.zip` (Linux) or `Windows-Plugin-LabAPI.zip` (Windows).
 - Place `DiscordIntegration.dll` inside the EXILED `Plugins` folder like any other plugin and its dependencies in the `Plugins/dependencies` folder.
-- Place `DiscordIntegration.Bot` (Linux) or `DiscordIntegration.Bot.exe` (Windows) insade `Linux-Plugin-Exiled.zip` (Linux) or `Windows-Plugin-Exiled.zip` (Windows) folder, and place it anywhere within the system running the SL server.
+- Place `DiscordIntegration.Bot` (Linux) or `DiscordIntegration.Bot.exe` (Windows) insade `Linux-Plugin-LabAPI.zip` (Linux) or `Windows-Plugin-LabAPI.zip` (Windows) folder, and place it anywhere within the system running the SL server.
