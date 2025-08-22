@@ -6,7 +6,7 @@
 
 <h2 align="center">Minimum requirements</h2>
 
-- [EXILED](https://github.com/ExSLMod-Team/EXILED/releases) **9.6.0++**
+- [LabAPI](https://github.com/northwood-studios/LabAPI) **1.1.0++**
 
 <h2 align="center"> Installation </h2>
 
