@@ -1,10 +1,10 @@
 <h1 align="center">Exiled Version</h1>
 
 - [README](https://github.com/Yti890/DiscordIntegration/blob/master/README.md)
-- [Old README](.README.old.md)
-- [LabAPI README](.README.LabAPI.md)
-- [Create Discord Bot README](.README.CDB.md)
-- [Config.json README](.README.CJF.md)
+- [Old README](./README.old.md)
+- [LabAPI README](./README.LabAPI.md)
+- [Create Discord Bot README](./README.CDB.md)
+- [Config.json README](./README.CJF.md)
 
 <h2 align="center">Minimum requirements</h2>
 
