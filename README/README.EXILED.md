@@ -1,8 +1,8 @@
 <h1 align="center">Exiled Version</h1>
 
 - [README](./README.md)
-- [Old README](./README.old.md)
-- [LabAPI README](./README.LabAPI.md)  
+- [Old README](./README/README.old.md)
+- [LabAPI README](./README/README.LabAPI.md)  
 
 <h2 align="center">Minimum requirements</h2>
 
