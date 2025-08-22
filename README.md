@@ -29,6 +29,6 @@
 
 ---
 ## 📚 Documentation
-- [Old README](./README.old.md)
-- [EXILED README](./README.EXILED.md)
-- [LabAPI README](./README.LabAPI.md)  
+- [Old README](./README/README.old.md)
+- [EXILED README](./README/README.EXILED.md)
+- [LabAPI README](./README/README.LabAPI.md)  
