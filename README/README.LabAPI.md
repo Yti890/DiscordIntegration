@@ -3,8 +3,8 @@
 - [README](https://github.com/Yti890/DiscordIntegration/blob/master/README.md)
 - [Old README](./README.old.md)
 - [EXILED README](./README.EXILED.md)
-- [Create Discord Bot README](.README.CDB.md)
-- [Config.json README](.README.CJF.md)
+- [Create Discord Bot README](./README.CDB.md)
+- [Config.json README](./README.CJF.md)
 
 <h2 align="center">Minimum requirements</h2>
 
