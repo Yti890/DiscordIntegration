@@ -41,8 +41,7 @@ namespace DiscordIntegration.Patches
 
         private static void LogCommand(string query, CommandSender sender)
         {
-            if (!DiscordIntegration.Instance.Config.EventsToLog.SendingRemoteAdminCommands &&
-                !DiscordIntegration.Instance.Config.StaffOnlyEventsToLog.SendingRemoteAdminCommands)
+            if (!DiscordIntegration.Instance.Config.EventsToLog.SendingRemoteAdminCommands)
                 return;
 
             if (string.IsNullOrWhiteSpace(query))

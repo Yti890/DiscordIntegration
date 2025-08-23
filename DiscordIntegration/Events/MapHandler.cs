@@ -67,13 +67,6 @@ namespace DiscordIntegration.Events
 
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, string.Format(ev.Player == null ? Language.CanceledWarhead : Language.PlayerCanceledWarhead, vars))).ConfigureAwait(false);
             }
-
-            if (Instance.Config.StaffOnlyEventsToLog.StoppingWarhead)
-            {
-                object[] vars = ev.Player == null
-                    ? Array.Empty<object>()
-                    : new object[] { ev.Player.Nickname, ev.Player.UserId, ev.Player.Role };
-            }
         }
 
         public async void OnUpgradingItems(Exiled.Events.EventArgs.Scp914.UpgradingInventoryItemEventArgs ev)

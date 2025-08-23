@@ -9,11 +9,10 @@ public class Config
     public Dictionary<ushort, Dictionary<ulong, List<string>>> ValidCommands { get; set; } = new();
     public Dictionary<ushort, ulong> DiscordServerIds { get; set; } = new();
     public Dictionary<ushort, TcpServerConfig> TcpServers { get; set; } = new();
+    public Dictionary<ulong, string> DiscordAutomaticRoles { get; set; } = new();
     public int KeepAliveInterval { get; set; }
     public int MessageDelay { get; set; }
     public bool Debug { get; set; }
-    public ushort AdminChatMesg { get; set; }
-
     public static Config Default => new()
     {
         BotTokens = new Dictionary<ushort, string>
@@ -84,8 +83,7 @@ public class Config
                         {
                             new()
                             {
-                                Id = 0,
-                                LogType = LogType.Embed
+                                Id = 0
                             },
                         },
                     }
@@ -124,6 +122,13 @@ public class Config
                     IpAddress = "127.0.0.1"
                 }
             }
+        },
+
+        DiscordAutomaticRoles = new Dictionary<ulong, string>
+        {
+            { 123456789012345678, "owner" },
+            { 234567890123456789, "admin" },
+            { 345678901234567890, "mod" }
         },
 
         KeepAliveInterval = 2000,

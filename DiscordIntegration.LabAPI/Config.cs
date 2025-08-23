@@ -11,8 +11,6 @@ namespace DiscordIntegration
         public Bot Bot { get; private set; } = new Bot();
         [Description("Indicates events that should be logged or not")]
         public EventsToLog EventsToLog { get; private set; } = new EventsToLog();
-        [Description("Indicates events that should be logged to the staff-only channel. These logs always ignore DNT, and will always show the player's UserID.")]
-        public EventsToLog StaffOnlyEventsToLog { get; private set; } = new EventsToLog();
         [Description("Indicates whether players' IP Addresses should be logged or not")]
         public bool ShouldLogIPAddresses { get; private set; } = true;
         [Description("Indicates whether players' user ids should be logged or not")]

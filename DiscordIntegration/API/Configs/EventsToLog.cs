@@ -116,5 +116,7 @@ namespace DiscordIntegration.API.Configs
         public bool TurningOffLight { get; private set; } = true;
 
         public bool OpenMicroHIDDoor { get; private set; } = true;
+
+        public bool AdminChat { get; private set; } = true;
     }
 }

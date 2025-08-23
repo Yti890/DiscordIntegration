@@ -194,6 +194,7 @@ namespace DiscordIntegration
             Handlers.Player.ChangingRole += playerHandler.OnChangingRole;
             Handlers.Player.ChangingGroup += playerHandler.OnChangingGroup;
             Handlers.Player.ChangingItem += playerHandler.OnChangingItem;
+            Handlers.Player.SendingAdminChatMessage += playerHandler.OnSendingAdminMessage;
             Handlers.Scp914.Activating += playerHandler.OnActivatingScp914;
             Handlers.Map.AnnouncingChaosEntrance += mapHandler.OnAnnounceCI;
             Handlers.Map.AnnouncingNtfEntrance += mapHandler.OnAnnounceMTF;
@@ -262,6 +263,7 @@ namespace DiscordIntegration
             Handlers.Player.ChangingRole -= playerHandler.OnChangingRole;
             Handlers.Player.ChangingGroup -= playerHandler.OnChangingGroup;
             Handlers.Player.ChangingItem -= playerHandler.OnChangingItem;
+            Handlers.Player.SendingAdminChatMessage -= playerHandler.OnSendingAdminMessage;
             Handlers.Scp914.Activating -= playerHandler.OnActivatingScp914;
             Handlers.Map.AnnouncingChaosEntrance -= mapHandler.OnAnnounceCI;
             Handlers.Map.AnnouncingNtfEntrance -= mapHandler.OnAnnounceMTF;

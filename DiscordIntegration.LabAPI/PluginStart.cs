@@ -11,7 +11,6 @@ namespace DiscordIntegration
     using global::DiscordIntegration.Dependency;
     using HarmonyLib;
     using LabApi.Events.CustomHandlers;
-    using LabApi.Features.Console;
     using LabApi.Features.Wrappers;
     using LabApi.Loader.Features.Plugins;
     using System;

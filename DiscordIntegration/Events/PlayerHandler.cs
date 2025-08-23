@@ -241,5 +241,11 @@ namespace DiscordIntegration.Events
             if (ev.Player != null && Instance.Config.EventsToLog.OpenMicroHIDDoor && (!ev.Player.DoNotTrack || !Instance.Config.ShouldRespectDoNotTrack))
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, string.Format(Language.OpenMicroHID, ev.Player.Nickname, Instance.Config.ShouldLogUserIds ? ev.Player.UserId : Language.Redacted ?? Language.None))).ConfigureAwait(false);
         }
+
+        public async void OnSendingAdminMessage(Exiled.Events.EventArgs.Player.SendingAdminChatMessageEventsArgs ev)
+        {
+            if (ev.Player != null && Instance.Config.EventsToLog.AdminChat && (!ev.Player.DoNotTrack || !Instance.Config.ShouldRespectDoNotTrack))
+                await Network.SendAsync(new RemoteCommand(ActionType.AdminMessage, $"{Server.Name} {ev.Player.GroupName} {ev.Player.Nickname} {ev.Message}")).ConfigureAwait(false);
+        }
     }
 }

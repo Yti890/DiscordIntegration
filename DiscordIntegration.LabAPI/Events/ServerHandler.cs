@@ -4,6 +4,7 @@ namespace DiscordIntegration.Events
     using LabApi.Events.Arguments.PlayerEvents;
     using LabApi.Events.Arguments.ServerEvents;
     using LabApi.Events.CustomHandlers;
+    using LabApi.Features.Console;
     using LabApi.Features.Wrappers;
     using static PluginStart;
 
@@ -44,6 +45,13 @@ namespace DiscordIntegration.Events
             if (Instance.Config.EventsToLog.RespawningTeam)
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, string.Format(ev.Wave.Faction == PlayerRoles.Faction.FoundationEnemy ? Language.ChaosInsurgencyHaveSpawned : Language.NineTailedFoxHaveSpawned, ev.Players.Count))).ConfigureAwait(false);
             base.OnServerWaveRespawned(ev);
+        }
+        public override async void OnServerSendingAdminChat(SendingAdminChatEventArgs ev)
+        {
+            if (Instance.Config.EventsToLog.AdminChat)
+                Logger.Info(ev.Message);
+            await Network.SendAsync(new RemoteCommand(ActionType.AdminMessage,$"{Server.ServerListName} {Player.Get(ev.Sender).GroupName} {ev.Sender.Nickname} {ev.Message}")).ConfigureAwait(false);
+            base.OnServerSendingAdminChat(ev);
         }
     }
 }

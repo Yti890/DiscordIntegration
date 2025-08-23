@@ -108,5 +108,7 @@ namespace DiscordIntegration.API.Configs
         public bool Scp079InteractingTesla { get; private set; } = true;
 
         public bool GainingScp079Level { get; private set; } = true;
+
+        public bool AdminChat { get; private set; } = true;
     }
 }

@@ -39,8 +39,7 @@ namespace DiscordIntegration.Patches
 
         private static void LogCommand(string query, QueryProcessor processor)
         {
-            if (!DiscordIntegration.Instance.Config.EventsToLog.SendingConsoleCommands &&
-                !DiscordIntegration.Instance.Config.StaffOnlyEventsToLog.SendingConsoleCommands)
+            if (!DiscordIntegration.Instance.Config.EventsToLog.SendingConsoleCommands)
                 return;
 
             if (string.IsNullOrWhiteSpace(query))

@@ -8,6 +8,7 @@ namespace DiscordIntegration.Dependency
         ExecuteCommand,
         CommandReply,
         UpdateChannelActivity,
-        AdminMessage
+        AdminMessage,
+        AutomaticRoles
     }
 }

@@ -56,6 +56,9 @@ namespace DiscordIntegration.Events
                             }
                         }
                         break;
+                    case ActionType.AutomaticRoles:
+                        Server.ExecuteCommand(remoteCommand.Parameters[0].ToString());
+                        break;
                 }
             }
             catch (Exception exception)

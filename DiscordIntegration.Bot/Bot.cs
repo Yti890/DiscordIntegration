@@ -25,7 +25,7 @@ public class Bot
     public InteractionService InteractionService { get; private set; } = null!;
     public SlashCommandHandler CommandHandler { get; private set; } = null!;
     public Dictionary<LogChannel, string> Messages { get; } = new();
-    private DiscordSocketConfig config = new DiscordSocketConfig { GatewayIntents = GatewayIntents.Guilds | GatewayIntents.GuildMessages | GatewayIntents.MessageContent };
+    private DiscordSocketConfig config = new DiscordSocketConfig { GatewayIntents = GatewayIntents.Guilds | GatewayIntents.GuildMessages | GatewayIntents.MessageContent | GatewayIntents.GuildMembers };
     public DiscordSocketClient Client => client ??= new DiscordSocketClient(config);
     public SocketGuild Guild => guild ??= Client.GetGuild(Program.Config.DiscordServerIds[ServerNumber]);
 
@@ -74,6 +74,8 @@ public class Bot
         InteractionService.Log += SendLog;
         Client.Log += SendLog;
         Client.MessageReceived += MessageReceived;
+        Client.GuildMemberUpdated += GuildMemberUpdated;
+        Client.UserLeft += UserLeft;
     }
 
     private async Task RegisterCommands()
@@ -109,6 +111,9 @@ public class Bot
                     break;
                 case ActionType.UpdateChannelActivity:
                     await HandleChannelTopic(command);
+                    break;
+                case ActionType.AdminMessage:
+                    await HandleChannelAdmin(command);
                     break;
             }
         }
@@ -190,6 +195,15 @@ public class Bot
                 await channel.ModifyAsync(x => x.Topic = (string)command.Parameters[0]);
         }
     }
+    private async Task HandleChannelAdmin(RemoteCommand command)
+    {
+        foreach(var channelId in Program.Config.Channels[ServerNumber].Logs.AdminChat)
+        {
+            var channel = Guild.GetTextChannel(channelId.Id);
+            if (channel is not null)
+                await channel.SendMessageAsync((string)command.Parameters[0]);
+        }
+    }
 
     private async Task DequeueMessages()
     {
@@ -243,5 +257,43 @@ public class Bot
 
             _ => throw new ArgumentOutOfRangeException()
         };
+    }
+    private async Task GuildMemberUpdated(Cacheable<SocketGuildUser, ulong> oldMemberCache, SocketGuildUser newMember)
+    {
+        string discordId = newMember.Id.ToString();
+        var steamEntry = Program.Users.SteamToDiscord.FirstOrDefault(x => x.Value == discordId);
+        if (string.IsNullOrEmpty(steamEntry.Key))
+            return;
+
+        string steamId = steamEntry.Key;
+        var oldMember = await oldMemberCache.GetOrDownloadAsync();
+        if (oldMember == null) return;
+
+        var oldRoles = oldMember.Roles.Select(r => r.Id).ToHashSet();
+        var newRoles = newMember.Roles.Select(r => r.Id).ToHashSet();
+
+        foreach (var kv in Program.Config.DiscordAutomaticRoles)
+        {
+            var roleId = kv.Key;
+            var roleName = kv.Value;
+            if (!oldRoles.Contains(roleId) && newRoles.Contains(roleId))
+            {
+                await Server.SendAsync(new RemoteCommand(ActionType.AutomaticRoles, $"/pm setgroup {steamId} {roleName}"));
+            }
+            if (oldRoles.Contains(roleId) && !newRoles.Contains(roleId))
+            {
+                await Server.SendAsync(new RemoteCommand(ActionType.AutomaticRoles, $"/pm setgroup {steamId} -1"));
+            }
+        }
+    }
+    private async Task UserLeft(SocketGuild guild, SocketUser user)
+    {
+        string discordId = user.Id.ToString();
+        var steamEntry = Program.Users.SteamToDiscord.FirstOrDefault(x => x.Value == discordId);
+        if (string.IsNullOrEmpty(steamEntry.Key))
+            return;
+
+        string steamId = steamEntry.Key;
+        await Server.SendAsync(new RemoteCommand(ActionType.AutomaticRoles, $"/pm setgroup {steamId} -1"));
     }
 }

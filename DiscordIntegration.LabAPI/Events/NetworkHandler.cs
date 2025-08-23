@@ -50,15 +50,15 @@ namespace DiscordIntegration.Events
                     case ActionType.AdminMessage:
                         foreach (var plr in Player.List)
                         {
-                            foreach (var group in Instance.Config.Ranks)
+                            if (plr.RemoteAdminAccess == true)
                             {
-                                if (plr.UserGroup.Name == group)
-                                {
-                                    plr.SendConsoleMessage(remoteCommand.Parameters[0].ToString(), UnityEngine.Color.green.ToString());
-                                    plr.SendBroadcast(remoteCommand.Parameters[0].ToString(), 10, global::Broadcast.BroadcastFlags.Normal, false);
-                                }
+                                plr.SendConsoleMessage(remoteCommand.Parameters[0].ToString(), UnityEngine.Color.green.ToString());
+                                plr.SendBroadcast(remoteCommand.Parameters[0].ToString(), 10, global::Broadcast.BroadcastFlags.Normal, false);
                             }
                         }
+                        break;
+                    case ActionType.AutomaticRoles:
+                        Server.RunCommand(remoteCommand.Parameters[0].ToString());
                         break;
                 }
             }

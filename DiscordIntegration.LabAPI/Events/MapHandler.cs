@@ -53,13 +53,6 @@ namespace DiscordIntegration.Events
 
                 await Network.SendAsync(new RemoteCommand(ActionType.Log, ChannelType.GameEvents, string.Format(ev.Player == null ? Language.CanceledWarhead : Language.PlayerCanceledWarhead, vars))).ConfigureAwait(false);
             }
-
-            if (Instance.Config.StaffOnlyEventsToLog.StoppingWarhead)
-            {
-                object[] vars = ev.Player == null
-                    ? Array.Empty<object>()
-                    : new object[] { ev.Player.Nickname, ev.Player.UserId, ev.Player.Role };
-            }
             base.OnWarheadStopping(ev);
         }
         public override async void OnScp914ProcessedPickup(Scp914ProcessedPickupEventArgs ev)
