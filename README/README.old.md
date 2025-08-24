@@ -6,7 +6,7 @@
 A bot and server plugin to allow server logs to be sent to Discord channels, and for server commands to be run via the Discord bot.
 
 ## Minimum requirements
-[EXILED](https://github.com/ExSLMod-Team/EXILED/releases) **9.6.0++**
+[EXILED](https://github.com/ExMod-Team/EXILED) **9.6.0++**
 
 ## Installation
 1. Extract `DiscordIntegration.dll` and its dependencies from `Plugin.tar.gz`.
