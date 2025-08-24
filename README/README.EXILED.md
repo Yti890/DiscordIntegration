@@ -8,7 +8,7 @@
 
 <h2 align="center">Minimum requirements</h2>
 
-- [EXILED](https://github.com/ExSLMod-Team/EXILED/releases) **9.6.0++**
+- [EXILED](https://github.com/ExMod-Team/EXILED/releases) **9.6.0++**
 
 <h2 align="center"> Installation </h2>
 
